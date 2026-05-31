@@ -15,7 +15,7 @@ path = "src/main.rs"
 
 [dependencies]
 scx-synse-ipc = { path = "../scx-synse-ipc" }
-serde_json = { workspace = true }
+rkyv = { workspace = true }
 anyhow = { workspace = true }
 thiserror = { workspace = true }
 tokio = { workspace = true }

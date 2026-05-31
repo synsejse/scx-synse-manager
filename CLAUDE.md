@@ -42,11 +42,13 @@ sudo meson install -C builddir
 
 Three crates split along a **privilege boundary**:
 
-- **`scx-synse-ipc`** — pure serde types (`Request`, `Response`, `SchedMode`),
-  no I/O. Shared by both binaries. The wire format is **newline-delimited JSON
-  (NDJSON)**: one `Request` per line GUI→helper, one `Response` per line back.
-  `SchedMode::as_raw()` numbering (Auto=0…Server=4) must stay aligned with
-  upstream `scx_loader`.
+- **`scx-synse-ipc`** — the shared **rkyv** types (`Request`, `Response`,
+  `SchedMode`) plus the wire framing. Shared by both binaries. Messages are
+  rkyv-encoded (`rkyv::to_bytes` / `from_bytes`) and moved as **length-prefixed
+  binary frames** — a little-endian `u32` byte length then the bytes — via the
+  crate's `write_frame` / `read_frame` (generic over any tokio `AsyncRead` /
+  `AsyncWrite`). `SchedMode::as_raw()` numbering (Auto=0…Server=4) must stay
+  aligned with upstream `scx_loader`.
 
 - **`scx-synse-helper`** — the privileged binary (`scx-synse-helper`,
   installed to `libexecdir`, i.e. `/usr/libexec/`). Runs as root via `pkexec`.

@@ -1,7 +1,7 @@
 use std::process::Stdio;
 
-use scx_synse_ipc::{Request, Response};
-use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
+use rkyv::rancor::Error as RkyvError;
+use scx_synse_ipc::{read_frame, write_frame, Request, Response};
 use tokio::process::{Child, ChildStdin, ChildStdout, Command};
 
 /// Long-lived privileged helper client. Spawns once on first `send()`, then
@@ -16,7 +16,7 @@ pub struct HelperClient {
 struct HelperChild {
     process: Child,
     stdin: ChildStdin,
-    stdout: BufReader<ChildStdout>,
+    stdout: ChildStdout,
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -60,29 +60,26 @@ impl HelperClient {
 
     pub async fn send(&mut self, req: Request) -> Result<Response, HelperError> {
         let child = self.ensure_started().await?;
-        let mut encoded = serde_json::to_string(&req)
+        let payload = rkyv::to_bytes::<RkyvError>(&req)
             .map_err(|e| HelperError::Protocol(e.to_string()))?;
-        encoded.push('\n');
-        child.stdin.write_all(encoded.as_bytes()).await?;
-        child.stdin.flush().await?;
+        write_frame(&mut child.stdin, &payload).await?;
 
-        let mut response_line = String::new();
-        let n = child.stdout.read_line(&mut response_line).await?;
-        if n == 0 {
-            // EOF before any response — helper crashed or auth was canceled.
-            let status = child.process.try_wait().ok().flatten();
-            let stderr = drain_stderr(&mut child.process).await;
-            self.child = None;
-            return Err(match status {
-                Some(s) if s.code() == Some(126) || s.code() == Some(127) => {
-                    HelperError::AuthCanceled
-                }
-                _ => HelperError::Crashed(stderr),
-            });
+        match read_frame(&mut child.stdout).await? {
+            Some(frame) => rkyv::from_bytes::<Response, RkyvError>(&frame)
+                .map_err(|e| HelperError::Protocol(format!("decode: {e}"))),
+            None => {
+                // EOF before any response — helper crashed or auth was canceled.
+                let status = child.process.try_wait().ok().flatten();
+                let stderr = drain_stderr(&mut child.process).await;
+                self.child = None;
+                Err(match status {
+                    Some(s) if s.code() == Some(126) || s.code() == Some(127) => {
+                        HelperError::AuthCanceled
+                    }
+                    _ => HelperError::Crashed(stderr),
+                })
+            }
         }
-        let trimmed = response_line.trim();
-        serde_json::from_str::<Response>(trimmed)
-            .map_err(|e| HelperError::Protocol(format!("decode {trimmed:?}: {e}")))
     }
 
     async fn ensure_started(&mut self) -> Result<&mut HelperChild, HelperError> {
@@ -109,7 +106,7 @@ impl HelperClient {
             self.child = Some(HelperChild {
                 process,
                 stdin,
-                stdout: BufReader::new(stdout),
+                stdout,
             });
         }
         Ok(self.child.as_mut().unwrap())

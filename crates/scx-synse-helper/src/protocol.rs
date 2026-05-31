@@ -1,9 +1,9 @@
 use std::sync::Arc;
 use std::time::Duration;
 
-use anyhow::Result;
-use scx_synse_ipc::{Request, Response};
-use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
+use anyhow::{anyhow, Result};
+use rkyv::rancor::Error as RkyvError;
+use scx_synse_ipc::{read_frame, write_frame, Request, Response};
 
 use crate::executor::Executor;
 
@@ -22,7 +22,7 @@ where
 /// Run the helper protocol. Returns Ok when stdin reaches EOF or the idle
 /// timeout fires; returns Err on I/O failure.
 pub async fn run_with_timeout<R, W, E>(
-    input: R,
+    mut input: R,
     mut output: W,
     executor: Arc<E>,
     idle_timeout: Duration,
@@ -32,26 +32,20 @@ where
     W: tokio::io::AsyncWrite + Unpin,
     E: Executor + ?Sized + 'static,
 {
-    let mut lines = BufReader::new(input).lines();
     loop {
-        let next = tokio::time::timeout(idle_timeout, lines.next_line()).await;
-        let line = match next {
-            Ok(Ok(Some(line))) => line,
-            Ok(Ok(None)) => return Ok(()),     // EOF
+        let frame = match tokio::time::timeout(idle_timeout, read_frame(&mut input)).await {
+            Ok(Ok(Some(frame))) => frame,
+            Ok(Ok(None)) => return Ok(()),       // EOF
             Ok(Err(io)) => return Err(io.into()),
-            Err(_elapsed) => return Ok(()),    // watchdog
+            Err(_elapsed) => return Ok(()),      // watchdog
         };
-        if line.trim().is_empty() {
-            continue;
-        }
-        let response = match serde_json::from_str::<Request>(&line) {
+        let response = match rkyv::from_bytes::<Request, RkyvError>(&frame) {
             Ok(req) => handle(&*executor, req).await,
             Err(err) => Response::Err { message: format!("invalid request: {err}") },
         };
-        let mut encoded = serde_json::to_string(&response)?;
-        encoded.push('\n');
-        output.write_all(encoded.as_bytes()).await?;
-        output.flush().await?;
+        let payload = rkyv::to_bytes::<RkyvError>(&response)
+            .map_err(|e| anyhow!("encoding response: {e}"))?;
+        write_frame(&mut output, &payload).await?;
     }
 }
 
