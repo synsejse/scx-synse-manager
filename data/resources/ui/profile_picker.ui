@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.5"/>
+
+  <object class="AdwPreferencesGroup" id="profile_group">
+    <property name="title">Tune it for…</property>
+    <property name="description">Optional. Defaults to the recommended choice.</property>
+
+    <child>
+      <object class="AdwActionRow">
+        <property name="title">Balanced</property>
+        <property name="subtitle">A good all-round choice for everyday use.</property>
+        <property name="activatable-widget">profile_radio_auto</property>
+        <child type="suffix">
+          <object class="GtkCheckButton" id="profile_radio_auto">
+            <property name="active">true</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <child>
+      <object class="AdwActionRow">
+        <property name="title">Gaming</property>
+        <property name="subtitle">Smoother frame pacing and snappier input.</property>
+        <property name="activatable-widget">profile_radio_gaming</property>
+        <child type="suffix">
+          <object class="GtkCheckButton" id="profile_radio_gaming">
+            <property name="group">profile_radio_auto</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <child>
+      <object class="AdwActionRow">
+        <property name="title">Battery saver</property>
+        <property name="subtitle">Lighter on power to extend laptop battery life.</property>
+        <property name="activatable-widget">profile_radio_powersave</property>
+        <child type="suffix">
+          <object class="GtkCheckButton" id="profile_radio_powersave">
+            <property name="group">profile_radio_auto</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <child>
+      <object class="AdwActionRow">
+        <property name="title">Low latency</property>
+        <property name="subtitle">Tighter timing for audio work and competitive games.</property>
+        <property name="activatable-widget">profile_radio_lowlatency</property>
+        <child type="suffix">
+          <object class="GtkCheckButton" id="profile_radio_lowlatency">
+            <property name="group">profile_radio_auto</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <child>
+      <object class="AdwActionRow">
+        <property name="title">Server / throughput</property>
+        <property name="subtitle">Maximizes throughput for servers and workstations.</property>
+        <property name="activatable-widget">profile_radio_server</property>
+        <child type="suffix">
+          <object class="GtkCheckButton" id="profile_radio_server">
+            <property name="group">profile_radio_auto</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

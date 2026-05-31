@@ -1,0 +1,29 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/scx-synse-ipc",
+    "crates/scx-synse-helper",
+    "crates/scx-synse-gui",
+]
+
+[workspace.package]
+version = "0.2.0"
+edition = "2024"
+rust-version = "1.85"
+license = "GPL-2.0-or-later"
+authors = ["synse <gamerix2006@gmail.com>"]
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+anyhow = "1"
+thiserror = "2"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "sync", "io-util", "io-std", "process", "time"] }
+zbus = { version = "5", features = ["tokio"], default-features = false }
+scx_loader = "1.1.1"
+
+[profile.release]
+strip = "symbols"
+panic = "abort"
+lto = true
+codegen-units = 1

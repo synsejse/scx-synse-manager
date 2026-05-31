@@ -1,0 +1,33 @@
+[package]
+name = "scx-synse-gui"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[lib]
+name = "scx_synse_gui"
+path = "src/lib.rs"
+
+[[bin]]
+name = "scx-synse-manager"
+path = "src/main.rs"
+
+[dependencies]
+scx-synse-ipc = { path = "../scx-synse-ipc" }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true }
+zbus = { workspace = true }
+scx_loader = { workspace = true }
+gtk = { package = "gtk4", version = "0.9", features = ["v4_12"] }
+adw = { package = "libadwaita", version = "0.7", features = ["v1_5"] }
+glib = "0.20"
+gio = "0.20"
+
+[build-dependencies]
+glib-build-tools = "0.20"
+
+[dev-dependencies]
+tempfile = "3"

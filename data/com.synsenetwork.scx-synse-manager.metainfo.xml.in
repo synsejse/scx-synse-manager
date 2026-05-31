@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.synsenetwork.scx-synse-manager</id>
+  <name>scx-synse-manager</name>
+  <summary>Guided manager for sched-ext schedulers</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0-or-later</project_license>
+  <description>
+    <p>
+      A friendly GTK4 / libadwaita application for managing sched-ext schedulers
+      via scx_loader. Picks a scheduler for you based on your hardware, explains
+      every option in plain language, and asks for your password only once per
+      session.
+    </p>
+  </description>
+  <launchable type="desktop-id">com.synsenetwork.scx-synse-manager.desktop</launchable>
+  <provides>
+    <binary>scx-synse-manager</binary>
+  </provides>
+  <releases>
+    <release version="0.2.0" date="2026-05-31">
+      <description>
+        <p>Recommendation-first redesign with bundled icons.</p>
+      </description>
+    </release>
+  </releases>
+</component>

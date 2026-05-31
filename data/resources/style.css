@@ -1,0 +1,89 @@
+/* Recommended scheduler row: subtle accent-tinted background and a
+   left accent stripe to draw the eye without screaming. */
+row.synse-recommended-row {
+    background-color: alpha(@accent_color, 0.07);
+    box-shadow: inset 3px 0 0 @accent_color;
+}
+
+row.synse-recommended-row:hover {
+    background-color: alpha(@accent_color, 0.12);
+}
+
+/* The hero card: a roomier row carrying the current/recommended pick and
+   its Apply button. Larger title so it reads as the focal point. */
+row.synse-hero {
+    padding: 8px 10px;
+}
+
+row.synse-hero > box {
+    margin: 4px 0;
+}
+
+row.synse-hero title {
+    font-size: 1.15em;
+    font-weight: bold;
+}
+
+/* Compact "Recommended" pill rendered as a row suffix. Horizontal margin
+   keeps it from crowding the subtitle on its left and the Apply button on
+   its right. */
+label.synse-recommended-badge {
+    background-color: alpha(@accent_color, 0.18);
+    color: @accent_color;
+    border-radius: 999px;
+    padding: 3px 12px;
+    margin: 0 10px;
+    font-weight: bold;
+    font-size: 0.85em;
+}
+
+/* Use-case pills (Everyday / Gaming / Low latency / …) shown next to each
+   scheduler and on the hero card. Color encodes the category. */
+label.synse-badge {
+    border-radius: 999px;
+    padding: 2px 9px;
+    margin: 0 6px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+label.synse-badge-everyday {
+    background-color: alpha(@accent_color, 0.16);
+    color: @accent_color;
+}
+
+label.synse-badge-gaming {
+    background-color: alpha(#2ec27e, 0.20);
+    color: #2ec27e;
+}
+
+label.synse-badge-lowlatency {
+    background-color: alpha(#c061cb, 0.20);
+    color: #c061cb;
+}
+
+label.synse-badge-server {
+    background-color: alpha(#4ec9d6, 0.18);
+    color: #4ec9d6;
+}
+
+label.synse-badge-experimental {
+    background-color: alpha(@warning_color, 0.20);
+    color: @warning_color;
+}
+
+label.synse-badge-baseline,
+label.synse-badge-other {
+    background-color: alpha(@card_fg_color, 0.10);
+    color: alpha(@card_fg_color, 0.75);
+}
+
+/* Make the action-bar buttons a touch more confident. */
+button.suggested-action {
+    font-weight: bold;
+}
+
+/* Subtle hover lift on activatable rows. */
+row.activatable:hover {
+    background-color: alpha(@accent_color, 0.06);
+}

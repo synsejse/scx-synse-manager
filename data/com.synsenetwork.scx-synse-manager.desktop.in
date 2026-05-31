@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=scx-synse-manager
+GenericName=Scheduler Manager
+Comment=Pick and configure sched-ext schedulers with a guided UI
+Exec=scx-synse-manager
+Icon=com.synsenetwork.scx-synse-manager
+Terminal=false
+Type=Application
+Categories=System;Settings;
+Keywords=sched-ext;scheduler;scx;
+StartupNotify=true

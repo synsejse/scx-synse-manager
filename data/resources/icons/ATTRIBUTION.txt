@@ -1,0 +1,8 @@
+The icons under scalable/actions/ are from Font Awesome Free 6.7.2
+(https://fontawesome.com).
+
+Icons are licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/).
+Copyright 2024 Fonticons, Inc.
+
+Each SVG was modified only to add a `fill="#bebebe"` attribute and a
+`-symbolic` filename suffix so GTK recolors them to follow the active theme.

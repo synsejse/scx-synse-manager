@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/com/synsenetwork/scx-synse-manager">
+    <file preprocess="xml-stripblanks" compressed="true">ui/window.ui</file>
+    <file preprocess="xml-stripblanks" compressed="true">ui/profile_picker.ui</file>
+    <file compressed="true">style.css</file>
+  </gresource>
+
+  <!-- Bundled Font Awesome icons (CC BY 4.0). Exposed under a hicolor-style
+       path so IconTheme::add_resource_path("…/icons") can find them. -->
+  <gresource prefix="/com/synsenetwork/scx-synse-manager/icons">
+    <!-- App icon (full colour), so GTK can resolve the window icon even though
+         the system icon search path is cleared. Pulled from data/icons. -->
+    <file compressed="true" alias="scalable/apps/com.synsenetwork.scx-synse-manager.svg">hicolor/scalable/apps/com.synsenetwork.scx-synse-manager.svg</file>
+    <file compressed="true" alias="scalable/actions/gamepad-symbolic.svg">icons/scalable/actions/gamepad-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/headphones-symbolic.svg">icons/scalable/actions/headphones-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/sitemap-symbolic.svg">icons/scalable/actions/sitemap-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/scale-balanced-symbolic.svg">icons/scalable/actions/scale-balanced-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/server-symbolic.svg">icons/scalable/actions/server-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/moon-symbolic.svg">icons/scalable/actions/moon-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/cake-candles-symbolic.svg">icons/scalable/actions/cake-candles-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/bolt-symbolic.svg">icons/scalable/actions/bolt-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/wind-symbolic.svg">icons/scalable/actions/wind-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/beer-mug-empty-symbolic.svg">icons/scalable/actions/beer-mug-empty-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/brain-symbolic.svg">icons/scalable/actions/brain-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/flask-symbolic.svg">icons/scalable/actions/flask-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/layer-group-symbolic.svg">icons/scalable/actions/layer-group-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/dice-symbolic.svg">icons/scalable/actions/dice-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/clone-symbolic.svg">icons/scalable/actions/clone-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/cube-symbolic.svg">icons/scalable/actions/cube-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/bullseye-symbolic.svg">icons/scalable/actions/bullseye-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/terminal-symbolic.svg">icons/scalable/actions/terminal-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/fire-symbolic.svg">icons/scalable/actions/fire-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/link-symbolic.svg">icons/scalable/actions/link-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/arrow-rotate-left-symbolic.svg">icons/scalable/actions/arrow-rotate-left-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/microchip-symbolic.svg">icons/scalable/actions/microchip-symbolic.svg</file>
+    <file compressed="true" alias="scalable/actions/triangle-exclamation-symbolic.svg">icons/scalable/actions/triangle-exclamation-symbolic.svg</file>
+  </gresource>
+</gresources>
