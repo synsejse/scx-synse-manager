@@ -6,18 +6,21 @@
   <object class="AdwApplicationWindow" id="main_window">
     <property name="title">scx-synse-manager</property>
     <property name="default-width">620</property>
-    <property name="default-height">664</property>
+    <property name="default-height">624</property>
     <property name="content">
       <object class="AdwToolbarView" id="toolbar_view">
 
         <child type="top">
-          <object class="AdwHeaderBar" id="header_bar"/>
-        </child>
-
-        <child type="top">
-          <object class="AdwBanner" id="status_banner">
-            <property name="title"></property>
-            <property name="revealed">false</property>
+          <object class="AdwHeaderBar" id="header_bar">
+            <child type="start">
+              <object class="GtkLabel" id="status_pill">
+                <property name="visible">false</property>
+                <property name="label">Inactive</property>
+                <style>
+                  <class name="synse-status-pill"/>
+                </style>
+              </object>
+            </child>
           </object>
         </child>
 

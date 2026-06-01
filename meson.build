@@ -1,5 +1,5 @@
 project('scx-synse-manager', 'rust',
-  version: '0.2.1',
+  version: '0.2.2',
   license: 'GPL-2.0-or-later',
   meson_version: '>= 1.2.0',
 )

@@ -1179,7 +1179,7 @@ checksum = "b39cdef0fa800fc44525c84ccb54a029961a8215f9619753635a9c0d2538d46d"
 
 [[package]]
 name = "scx-synse-gui"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "anyhow",
  "gio",
@@ -1198,7 +1198,7 @@ dependencies = [
 
 [[package]]
 name = "scx-synse-helper"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1214,7 +1214,7 @@ dependencies = [
 
 [[package]]
 name = "scx-synse-ipc"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "rkyv",
  "tokio",

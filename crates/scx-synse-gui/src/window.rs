@@ -2,7 +2,7 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 use adw::prelude::*;
-use adw::{ActionRow, ApplicationWindow, Banner, PreferencesGroup, Toast, ToastOverlay};
+use adw::{ActionRow, ApplicationWindow, PreferencesGroup, Toast, ToastOverlay};
 use glib::clone;
 use gtk::{glib, Box as GtkBox, Builder, Button, Image, Label, Stack};
 
@@ -26,15 +26,15 @@ impl SynseWindow {
         let window: ApplicationWindow = object(&builder, "main_window");
         window.set_application(Some(app));
 
-        let banner: Banner = object(&builder, "status_banner");
+        let status_pill: Label = object(&builder, "status_pill");
         let content_stack: Stack = object(&builder, "content_stack");
         let toast_overlay: ToastOverlay = object(&builder, "toast_overlay");
         let scroll_box: GtkBox = object(&builder, "scroll_box");
 
         if is_supported(&SysfsRoot::default()) {
             content_stack.set_visible_child_name("main");
-            banner.set_revealed(true);
-            install_status_timer(&banner);
+            status_pill.set_visible(true);
+            install_status_timer(&status_pill);
             populate_scheduler_section(&scroll_box, &toast_overlay);
         } else {
             content_stack.set_visible_child_name("unsupported");
@@ -146,27 +146,32 @@ fn object<T: glib::object::IsA<glib::Object>>(builder: &Builder, id: &str) -> T 
         .unwrap_or_else(|| panic!("widget {id:?} missing from window.ui"))
 }
 
-/// Ask scx_loader what's running and update the banner. Polled once a second
-/// so external changes (e.g. via `scxctl`) are reflected.
-fn refresh_banner(banner: &Banner) {
-    let banner = banner.clone();
+/// Ask scx_loader what's running and update the header status pill. Polled once
+/// a second so external changes (e.g. via `scxctl`) are reflected.
+fn refresh_status_pill(pill: &Label) {
+    let pill = pill.clone();
     glib::spawn_future_local(async move {
-        let title = match loader_query::current_state().await {
-            Ok(Some((name, _))) => format!("● {name} is running."),
-            _ => "sched_ext is supported but no scheduler is running.".to_string(),
-        };
-        banner.set_title(&title);
+        match loader_query::current_state().await {
+            Ok(Some((name, _))) => {
+                pill.set_label(&format!("● {name}"));
+                pill.add_css_class("running");
+            }
+            _ => {
+                pill.set_label("Inactive");
+                pill.remove_css_class("running");
+            }
+        }
     });
 }
 
-fn install_status_timer(banner: &Banner) {
-    refresh_banner(banner);
-    let banner_weak = banner.downgrade();
+fn install_status_timer(pill: &Label) {
+    refresh_status_pill(pill);
+    let pill_weak = pill.downgrade();
     glib::timeout_add_seconds_local(1, move || {
-        let Some(banner) = banner_weak.upgrade() else {
+        let Some(pill) = pill_weak.upgrade() else {
             return glib::ControlFlow::Break;
         };
-        refresh_banner(&banner);
+        refresh_status_pill(&pill);
         glib::ControlFlow::Continue
     });
 }
