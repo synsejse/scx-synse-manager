@@ -1,5 +1,5 @@
 project('scx-synse-manager', 'rust',
-  version: '0.2.2',
+  version: '0.2.3',
   license: 'GPL-2.0-or-later',
   meson_version: '>= 1.2.0',
 )
@@ -34,19 +34,13 @@ cargo_target = custom_target('scx-synse-build',
   install_mode: 'rwxr-xr-x',
 )
 
-# Desktop file
-configure_file(
-  input: 'data/com.synsenetwork.scx-synse-manager.desktop.in',
-  output: 'com.synsenetwork.scx-synse-manager.desktop',
-  configuration: configuration_data(),
+# Desktop entry and AppStream metainfo — static, no substitution.
+install_data(
+  'data/com.synsenetwork.scx-synse-manager.desktop',
   install_dir: datadir / 'applications',
 )
-
-# AppStream metainfo
-configure_file(
-  input: 'data/com.synsenetwork.scx-synse-manager.metainfo.xml.in',
-  output: 'com.synsenetwork.scx-synse-manager.metainfo.xml',
-  configuration: configuration_data(),
+install_data(
+  'data/com.synsenetwork.scx-synse-manager.metainfo.xml',
   install_dir: datadir / 'metainfo',
 )
 
